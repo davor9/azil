@@ -15,7 +15,7 @@ class clsZivotinja
     public function snimiZivotinju($konekcija)
     {
             $upit = "INSERT INTO `zivotinja` (`vrsta`, `ime`, `godine`, `vakcinisana`, `pregledao`, `rasa`, `opis`) 
-            VALUES ('$this->vrsta', '$this->ime', '$this->godine', '$this->vakcinisana', '$this->pregledao', '$this->rasa', '$this->opis' );";
+            VALUES ('$this->vrsta', '$this->ime', '$this->godine', '$this->vakcinisana', (SELECT id from veterinar where imeP = '$this->pregledao'), '$this->rasa', '$this->opis' );";
             $result = mysqli_query($konekcija, $upit);
             if (!$result) {
                 echo "Podaci o zivotinji nisu upisani u bazu podataka. Greška! ";
@@ -30,7 +30,7 @@ class clsZivotinja
     public function prikazSvihZivotinja($konekcija)
     {
 
-        $upit = "SELECT * FROM `zivotinja`";
+        $upit = "SELECT z.id, z.ime, z.vrsta, z.godine, z.vakcinisana, v.imeP, z.rasa, z.opis FROM `zivotinja` z inner join `veterinar` v on z.pregledao = v.id";
         $result = mysqli_query($konekcija, $upit);
         return $result;
     }
@@ -38,7 +38,7 @@ class clsZivotinja
 
     public function pretraga($konekcija, $pretraga)
     {
-        $upit = "SELECT * FROM `zivotinja` WHERE `ime` LIKE '%$pretraga%'";
+        $upit = "SELECT z.id, z.ime, z.vrsta, z.godine, z.vakcinisana, v.imeP, z.rasa, z.opis FROM `zivotinja` z inner join `veterinar` v on z.pregledao = v.id WHERE z.ime LIKE '%$pretraga%'";
         $result = mysqli_query($konekcija, $upit);
         return $result;
     }
@@ -58,7 +58,7 @@ class clsZivotinja
     {
 
         $upit = "UPDATE `zivotinja` SET
-    `ime` ='$this->ime', `vrsta` = '$this->vrsta', `godine` = '$this->godine', `vakcinisana` = '$this->vakcinisana', `pregledao` = '$this->pregledao', `rasa` = '$this->rasa', `opis` = '$this->opis' WHERE `id` = '$id'";
+    `ime` ='$this->ime', `vrsta` = '$this->vrsta', `godine` = '$this->godine', `vakcinisana` = '$this->vakcinisana', `pregledao` = (SELECT id from veterinar where imeP = '$this->pregledao'), `rasa` = '$this->rasa', `opis` = '$this->opis' WHERE `id` = '$id'";
         $result = mysqli_query($konekcija, $upit);
 
         if (!$result) {

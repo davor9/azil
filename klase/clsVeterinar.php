@@ -11,7 +11,7 @@ class clsVeterinar
 
     public function snimiVeterinara($konekcija)
     {
-            $upit = "INSERT INTO `veterinar` (`ime`, `specijalnost`, `email`, `telefon`) 
+            $upit = "INSERT INTO `veterinar` (`imeP`, `specijalnost`, `email`, `telefon`) 
             VALUES ('$this->ime', '$this->specijalnost', '$this->email', '$this->telefon');";
             $result = mysqli_query($konekcija, $upit);
             if (!$result) {
@@ -35,14 +35,14 @@ class clsVeterinar
 
     public function pretraga($konekcija, $pretraga)
     {
-        $upit = "SELECT * FROM `veterinar` WHERE `ime` LIKE '%$pretraga%'";
+        $upit = "SELECT * FROM `veterinar` WHERE `imeP` LIKE '%$pretraga%'";
         $result = mysqli_query($konekcija, $upit);
         return $result;
     }
 
     public function obrisiVeterinara($konekcija, $id)
     {
-        $upit = "UPDATE `zivotinja` SET `pregledao` = NULL Where `zivotinja`.`pregledao` = (SELECT `ime` from `veterinar` where `veterinar`.`id` = $id)";
+        $upit = "UPDATE `zivotinja` SET `pregledao` = NULL Where `zivotinja`.`pregledao` =  '$id'";
         $result = mysqli_query($konekcija, $upit);
         $upit = "DELETE `veterinar` 
     FROM `veterinar`
@@ -55,7 +55,7 @@ class clsVeterinar
     {
 
         $upit = "UPDATE `veterinar` SET
-    `ime` ='$this->ime', `specijalnost` = '$this->specijalnost', `email` = '$this->email', `telefon` = '$this->telefon' WHERE `id` = '$id'";
+    `imeP` ='$this->ime', `specijalnost` = '$this->specijalnost', `email` = '$this->email', `telefon` = '$this->telefon' WHERE `id` = '$id'";
         $result = mysqli_query($konekcija, $upit);
 
         if (!$result) {
